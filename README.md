@@ -14,8 +14,8 @@ It is not clipboard synchronization. It is a guarded input injector.
 The default workflow:
 
 1. Takes one immutable snapshot of the Wayland text clipboard.
-2. Rejects empty text, line breaks, tabs, control characters, and more than 256
-   characters.
+2. Rejects empty text, line breaks, tabs, and control characters. Text length is
+   unrestricted.
 3. Displays the exact snapshot for explicit approval.
 4. Hides the preview and waits 500 ms for the intended window to regain focus.
 5. Types through `ydotool` with a 15 ms delay between key events.

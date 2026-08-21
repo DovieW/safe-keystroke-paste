@@ -9,7 +9,7 @@ from . import __version__
 from .clipboard import ClipboardError, read_text
 from .control import AlreadyRunning, InstanceControl, request_cancel
 from .injector import InjectionError, InjectionOptions, inject
-from .validation import SafetyPolicy, UnsafeText, validate_text
+from .validation import UnsafeText, validate_text
 
 
 def parser() -> argparse.ArgumentParser:
@@ -20,7 +20,6 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--version", action="version", version=__version__)
     subcommands = result.add_subparsers(dest="command")
     send = subcommands.add_parser("send", help="preview and type clipboard text")
-    send.add_argument("--max-characters", type=int, default=256)
     send.add_argument("--key-delay", type=int, default=15, metavar="MS")
     send.add_argument("--focus-delay", type=int, default=500, metavar="MS")
     send.add_argument(
@@ -44,17 +43,13 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     if arguments.command is None:
         arguments = parser().parse_args(["send"])
-    if not 1 <= arguments.max_characters <= 4096:
-        return _error("--max-characters must be between 1 and 4096.")
     if not 1 <= arguments.key_delay <= 1000:
         return _error("--key-delay must be between 1 and 1000 milliseconds.")
     if not 100 <= arguments.focus_delay <= 10000:
         return _error("--focus-delay must be between 100 and 10000 milliseconds.")
 
     try:
-        text = validate_text(
-            read_text(), SafetyPolicy(max_characters=arguments.max_characters)
-        )
+        text = validate_text(read_text())
         control = InstanceControl.acquire()
     except (ClipboardError, UnsafeText, AlreadyRunning) as exc:
         return _error(str(exc))

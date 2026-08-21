@@ -1,6 +1,6 @@
 import pytest
 
-from safe_keystroke_paste.validation import SafetyPolicy, UnsafeText, validate_text
+from safe_keystroke_paste.validation import UnsafeText, validate_text
 
 
 def test_accepts_short_single_line_text():
@@ -13,8 +13,8 @@ def test_rejects_actionable_control_characters(text):
         validate_text(text)
 
 
-def test_rejects_empty_and_oversized_text():
+def test_rejects_empty_text_but_accepts_text_of_any_length():
     with pytest.raises(UnsafeText):
         validate_text("")
-    with pytest.raises(UnsafeText):
-        validate_text("abcd", SafetyPolicy(max_characters=3))
+    long_text = "a" * 100_000
+    assert validate_text(long_text) == long_text
