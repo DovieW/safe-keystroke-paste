@@ -1,5 +1,7 @@
 # Safe Keystroke Paste
 
+![Safe Keystroke Paste banner](assets/social-preview.png)
+
 Safe Keystroke Paste previews, validates, and deliberately paces clipboard text
 before typing it as synthetic keyboard input on Linux. It is intended for
 restricted remote-desktop environments where ordinary clipboard redirection is
