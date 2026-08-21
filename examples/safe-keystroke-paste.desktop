@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Safe Keystroke Paste
+Comment=Preview and type clipboard text with safety limits
+Exec=skpaste send
+Icon=edit-paste
+Terminal=false
+Categories=Utility;

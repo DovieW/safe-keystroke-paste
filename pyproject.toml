@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "safe-keystroke-paste"
+version = "0.1.0"
+description = "Preview, validate, and pace clipboard text before typing it as keystrokes"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE"}
+authors = [{name = "DovieW"}]
+keywords = ["clipboard", "keystrokes", "rdp", "wayland", "ydotool"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: X11 Applications :: Qt",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Topic :: Desktop Environment",
+]
+dependencies = ["PyQt6>=6.5"]
+
+[project.optional-dependencies]
+dev = ["build>=1.2", "pytest>=8", "ruff>=0.12"]
+
+[project.scripts]
+skpaste = "safe_keystroke_paste.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/DovieW/safe-keystroke-paste"
+Issues = "https://github.com/DovieW/safe-keystroke-paste/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/safe_keystroke_paste"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
