@@ -49,7 +49,7 @@ def main(argv: list[str] | None = None) -> int:
         return _error("--focus-delay must be between 100 and 10000 milliseconds.")
 
     try:
-        text = validate_text(read_text())
+        text = read_text()
         control = InstanceControl.acquire()
     except (ClipboardError, UnsafeText, AlreadyRunning) as exc:
         return _error(str(exc))
@@ -63,6 +63,7 @@ def main(argv: list[str] | None = None) -> int:
         dialog = PreviewDialog(text, arguments.focus_delay)
         if dialog.exec() != QDialog.DialogCode.Accepted:
             return 0
+        text = validate_text(dialog.text())
         dialog.hide()
         application.processEvents()
         if arguments.dry_run:
@@ -77,7 +78,7 @@ def main(argv: list[str] | None = None) -> int:
             ),
         )
         return 0 if completed else 130
-    except (ImportError, InjectionError) as exc:
+    except (ImportError, InjectionError, UnsafeText) as exc:
         return _error(str(exc))
     finally:
         control.close()
